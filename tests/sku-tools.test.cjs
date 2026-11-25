@@ -258,9 +258,9 @@ test("activity distinguishes new IDs, repeated IDs, empty text and nontext respo
   assert.deepEqual(data.scan.recentResponses, scan.recentResponses);
   assert.equal(data.scan.nonTextResponses, 1);
   const html = run("g1-sku-report.js", { url: REPORT, storage }).payload.response.body;
-  assert(html.includes("实际采集脚本：<code>g1-acq-v7.6</code>"));
-  assert(html.includes("编号与已有记录重复"));
-  assert(html.includes("正文不是可扫描文本"));
+  assert(html.includes("Actual collection script: <code>g1-acq-v7.6</code>"));
+  assert(html.includes("IDs already recorded"));
+  assert(html.includes("body is not scannable text"));
 });
 
 test("recent activity keeps ten arrivals and redacts URLs, extra fields and malformed events", () => {
@@ -277,7 +277,7 @@ test("recent activity keeps ten arrivals and redacts URLs, extra fields and malf
   assert.equal(scan.recentResponses[0].at, valid.at);
   assert.equal(scan.recentResponses.at(-1).path, "/plans", "last received event stays last even after a clock change");
   const paths = ["/", "/ai/", "/plans/", "/_/GoogleOne/account-secret/data/batchexecute", "/account/private@example.test"];
-  const expected = ["/", "/ai", "/plans", "/_/…/data/batchexecute", "[其他 one.google.com 路径]"];
+  const expected = ["/", "/ai", "/plans", "/_/…/data/batchexecute", "[Other one.google.com path]"];
   for (let index = 0; index < 14; index++) {
     run("g1-acq.js", { url: "https://one.google.com" + paths[index % 5] + "?secret=query#private-fragment", body: SOURCE, storage });
   }
@@ -304,7 +304,7 @@ test("old scan records remain old until an actual response creates a new diagnos
   assert.equal(data.scan.scannedResponses, 5);
   assert.equal(storage.get(SCAN_KEY), before);
   const html = run("g1-sku-report.js", { url: REPORT, storage }).payload.response.body;
-  assert(html.includes("旧采集记录；尚未保存本版采集响应记录"));
+  assert(html.includes("Old collection records; no response records from the current collector have been saved yet."));
   run("g1-acq.js", { url: "https://one.google.com/plans", body: SOURCE, storage });
   data = JSON.parse(run("g1-sku-report.js", { url: REPORT + "?format=json", storage }).payload.response.body);
   assert.equal(data.scan.version, "g1-acq-v7.6");
@@ -414,11 +414,11 @@ test("report displays captured IDs and test sources without external assets", ()
   run("g1-acq.js", { body: SOURCE, storage });
   const { payload } = run("g1-sku-report.js", { url: REPORT, storage });
   assert.equal(payload.response.status, 200);
-  assert.match(payload.response.body, /Google One SKU 本地报告/);
+  assert.match(payload.response.body, /Google One SKU Local Report/);
   assert(payload.response.body.includes(SOURCE));
   assert(payload.response.body.includes(TARGET));
-  assert(payload.response.body.includes("本机脚本已接管 · v7.6.0"));
-  assert.match(payload.response.body, /<button\b[^>]*name=format[^>]*value=json[^>]*>导出 JSON<\/button>/);
+  assert(payload.response.body.includes("Handled by local script · v7.6.0"));
+  assert.match(payload.response.body, /<button\b[^>]*name=format[^>]*value=json[^>]*>Export JSON<\/button>/);
   assert(!/<(?:script|img|iframe)\b/i.test(payload.response.body));
   assert.equal(payload.response.headers["Cache-Control"], "no-store");
 });
@@ -463,12 +463,12 @@ test("report exports each actual target and separates annual hits from total hit
     id: THIRTY, count: 1, to: THIRTY_FALLBACK, fallback: true
   });
   const html = run("g1-sku-report.js", { url: REPORT, storage }).payload.response.body;
-  assert(html.includes("最近一次三档映射"));
-  assert(html.includes("其中 2TB：1"));
+  assert(html.includes("Most recent three-tier mapping"));
+  assert(html.includes("of which 2TB: 1"));
   assert(html.includes(TWENTY_TARGET));
   assert(html.includes(THIRTY_FALLBACK));
   assert(html.includes(THIRTY_FALLBACK + "</code></td><td>90p</td>"));
-  assert(html.includes("支持 Ultra 1个月免费试用"));
+  assert(html.includes("support the Ultra 1-month free trial"));
 });
 
 test("report preserves historical 75p fallbacks and keeps old 90p defaults distinct", () => {
@@ -488,7 +488,7 @@ test("report preserves historical 75p fallbacks and keeps old 90p defaults disti
   assert.deepEqual(data.matchedFrom, previous.matchedFrom);
   const html = run("g1-sku-report.js", { url: REPORT, storage }).payload.response.body;
   assert(html.includes(LEGACY_TWENTY_FALLBACK + "</code></td><td>75p</td>"));
-  assert(html.includes(THIRTY_FALLBACK + "</code></td><td>否</td>"));
+  assert(html.includes(THIRTY_FALLBACK + "</code></td><td>No</td>"));
   assert.equal(storage.get(TEST_KEY), before);
 });
 
@@ -497,7 +497,7 @@ test("report does not invent a discount for a fallback whose target was not reco
     schemaVersion: 1, version: "g1-acq-v7.5", matchedFrom: [{ id: TWENTY, count: 1, fallback: true }]
   })]]);
   const html = run("g1-sku-report.js", { url: REPORT, storage }).payload.response.body;
-  assert(html.includes("<code>未记录</code></td><td>是</td>"));
+  assert(html.includes("<code>Not recorded</code></td><td>Yes</td>"));
 });
 
 test("new report displays existing v1 records with their original 2TB target", () => {
@@ -518,7 +518,7 @@ test("new report displays existing v1 records with their original 2TB target", (
     status: "no-match", matchedFrom: []
   }));
   const html = run("g1-sku-report.js", { url: REPORT, storage }).payload.response.body;
-  assert(html.includes("旧 v1 记录：本次响应未命中 iOS 2TB 前缀"));
+  assert(html.includes("Old v1 record: this response did not match the iOS 2TB prefix"));
 });
 
 test("report preserves saved v7.1 through v7.5 targets and origins independently of current configuration", () => {
@@ -545,8 +545,8 @@ test("report preserves saved v7.1 through v7.5 targets and origins independently
     assert.equal(data.test.matchedFrom[0].to, prior.target);
     assert.equal(storage.get(TEST_KEY), before);
     const html = run("g1-sku-report.js", { url: REPORT, storage }).payload.response.body;
-    assert(html.includes("当前配置的 2TB 候选目标：<code>" + TARGET + "</code>"));
-    assert(html.includes("该次记录的 2TB 目标：<code>" + prior.target + "</code>"));
+    assert(html.includes("Currently configured 2TB candidate target: <code>" + TARGET + "</code>"));
+    assert(html.includes("2TB target recorded this time: <code>" + prior.target + "</code>"));
   }
   const empty = JSON.parse(run("g1-sku-report.js", { url: REPORT + "?format=json" }).payload.response.body);
   assert.equal(empty.configuredTarget, TARGET);

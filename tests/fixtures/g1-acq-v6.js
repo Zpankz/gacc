@@ -1,25 +1,25 @@
 /**
- * g1-acq.js — Google One 订阅页商品 ID 映射(Shadowrocket http-response 脚本)
+ * g1-acq.js - Google One subscription page product ID mapping (Shadowrocket http-response script)
  *
- * 设计原则:
- *   1. 单一职责——只做「原始月付 ID → 优惠档 ID」的字符串映射,不做诊断、不做上报;
- *   2. 目录感知——先从响应原文里收集真实存在的优惠档(acq 结尾),目标档
- *      不在目录而备用档在目录时,自动落到备用档,避免把收银台指向空商品;
- *   3. 数据外置——所有映射集中在 SKU_MAP / FALLBACK 两个表里,增删档位只改表。
+ * Design principles:
+ *   1. Single responsibility - only maps original monthly IDs to offer-tier IDs as strings; no diagnostics, no reporting;
+ *   2. Catalogue-aware - first collects offer tiers that actually exist in the response (ending in acq); when the target tier
+ *      is not in the catalogue but the fallback tier is, automatically uses the fallback tier to avoid pointing checkout at an empty product;
+ *   3. Externalised data - all mappings are centralised in the SKU_MAP / FALLBACK tables; adding or removing tiers only requires editing the tables.
  *
- * 版本:v6
+ * Version: v6
  */
 "use strict";
 
 console.log("[g1-acq] v6 loaded");
 
-/* 原始 iOS 内购 ID → 目标优惠档 */
+/* Original iOS in-app purchase ID -> target offer tier */
 var SKU_MAP = {
   "g1.ios.20tb.m.v2":     "g1.20tb.3months_ip_90p.acq",
   "g1.ios.30tb.ai.pro.m": "g1.ai.ultra.3months_ip_90p.acq"
 };
 
-/* 目标档不在目录时的备用档(社区实测 75p 档在 Play/iOS 目录均有出现) */
+/* Fallback tier when the target tier is not in the catalogue (community testing found the 75p tier in both Play/iOS catalogues) */
 var FALLBACK = {
   "g1.20tb.3months_ip_90p.acq":     "g1.20tb.3months_ip_75p.acq",
   "g1.ai.ultra.3months_ip_90p.acq": "g1.ai.ultra.3months_ip_75p.acq"
@@ -36,14 +36,14 @@ function run() {
     return;
   }
 
-  /* 响应里真实存在的优惠档目录 */
+  /* Offer-tier catalogue actually present in the response */
   var raw = body.match(/g1\.[a-z0-9._]{2,60}acq/g) || [];
   var seen = {};
   var catalog = [];
   for (var r = 0; r < raw.length; r++) {
     if (!seen[raw[r]]) { seen[raw[r]] = 1; catalog.push(raw[r]); }
   }
-  console.log("[g1-acq] 目录优惠档: " + (catalog.join(", ") || "无"));
+  console.log("[g1-acq] Catalogue offer tiers: " + (catalog.join(", ") || "none"));
 
   var out = body, total = 0;
   var froms = Object.keys(SKU_MAP);
@@ -54,7 +54,7 @@ function run() {
 
     var to = SKU_MAP[from];
     if (catalog.indexOf(to) === -1 && FALLBACK[to] && catalog.indexOf(FALLBACK[to]) !== -1) {
-      console.log("[g1-acq] 主档不在目录,降级 " + to + " -> " + FALLBACK[to]);
+      console.log("[g1-acq] Primary tier not in catalogue, downgrading " + to + " -> " + FALLBACK[to]);
       to = FALLBACK[to];
     }
 
@@ -63,7 +63,7 @@ function run() {
     console.log("[g1-acq] " + from + " -> " + to + " x" + n);
   }
 
-  console.log(total ? "[g1-acq] 共改写 " + total + " 处" : "[g1-acq] 未命中");
+  console.log(total ? "[g1-acq] Rewrote " + total + " occurrences" : "[g1-acq] No match");
   $done(total ? { body: out } : {});
 }
 

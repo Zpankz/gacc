@@ -1,157 +1,157 @@
 # g1-acq
 
-[![Telegram](https://img.shields.io/badge/Telegram-AI羊毛交流群-26A5E4?logo=telegram&logoColor=white)](https://t.me/muihbb)
+[![Telegram](https://img.shields.io/badge/Telegram-AI%20deals%20discussion%20group-26A5E4?logo=telegram&logoColor=white)](https://t.me/muihbb)
 
-> 💬 **AI羊毛交流群**:https://t.me/muihbb —— 交流 AI 优惠、订阅羊毛
+> 💬 **AI deals discussion group**: https://t.me/muihbb — Discuss AI deals and subscription bargains
 
-Google One（iOS）订阅入口的商品 ID 改写与采集工具，适用于 **Shadowrocket / 小火箭**。
+A tool for rewriting and collecting product IDs on Google One (iOS) subscription entry points, for **Shadowrocket**.
 
-**只需一个 G1 ACQ：支持 Ultra 1个月免费试用、2TB 12个月优惠测试、被动采集原始 SKU，并提供最近 10 次响应、本次新增、重复诊断与 JSON 导出。** 原始 iOS 2TB → `g1.2tb.ai.12months_ip_90p` 用户截图指定候选的 12个月优惠测试，20TB / 30TB 默认使用 Ultra 1个月免费试用 SKU `g1.20tb.1month_eft.acq` / `g1.ai.ultra.1month_eft.acq`，并各自独立回退到对应的三个月 90p 备用 SKU。当前安装版本为 `v7.6.0`，响应脚本为 `g1-acq-v7.6`，无需另装扫描器或反复切换模块。采集只读取手机实际收到的匹配响应，**不会主动查询全量 SKU**；旧 ID 再次出现时累加次数，清单保持原样也能代表正在收到重复数据。完整安装与实机核对步骤见 [Pro 12个月优惠测试与 SKU 扫描](docs/pro-annual-test.md)。
+**Just one G1 ACQ is all you need: it supports the Ultra 1-month free trial, the 2TB 12-month offer test, passive collection of original SKUs, and provides diagnostics for the most recent 10 responses, what was new in this response, and duplicates, plus JSON export.** The original iOS 2TB -> the user-screenshot-specified 12-month offer-test candidate `g1.2tb.ai.12months_ip_90p`; 20TB / 30TB default to the Ultra 1-month free trial SKUs `g1.20tb.1month_eft.acq` / `g1.ai.ultra.1month_eft.acq`, each independently falling back to its corresponding three-month 90p fallback SKU. The current installed version is `v7.6.0`, and the response script is `g1-acq-v7.6`; there is no need to install a separate scanner or repeatedly switch modules. Collection only reads matching responses actually received by the phone and **does not actively query the full SKU catalogue**; when an old ID appears again its count is incremented, and keeping the list as is still shows that duplicate data is being received. For full installation and on-device verification steps, see [Pro 12-month offer test and SKU scanning](docs/pro-annual-test.md).
 
-此次版本整合 [GitHub PR #3](https://github.com/crhywun/g1-acq/pull/3)，加入 20TB / 30TB 两档 Ultra 1个月免费试用支持；试用是否向当前账号展示、实际订阅周期与续费金额按 App Store 收银台记录，权益按 Google One 账户实际状态记录。
+This version integrates [GitHub PR #3](https://github.com/crhywun/g1-acq/pull/3), adding Ultra 1-month free trial support for the 20TB / 30TB tiers; whether the trial is shown to the current account, the actual subscription period, and the renewal amount are as recorded at the App Store checkout, and benefits are as shown in the actual state of the Google One account.
 
-> 响应中出现商品 ID，只能证明页面携带该字符串，不等于 App Store 商品目录校验。改写命中也不等于商品可购买；商品名称、周期、初次与续费金额须在 App Store 收银台核对，权益以 Google One 账户实际状态为准。
+> A product ID appearing in a response only proves that the page carries that string; it does not amount to validation against the App Store product catalogue. A rewrite hit also does not mean the product can be purchased; the product name, period, initial and renewal amounts must be checked at the App Store checkout, and benefits are subject to the actual state of the Google One account.
 
-## 主模块安装地址
+## Main module installation URL
 
-**G1 ACQ：Ultra 1个月免费试用、2TB 12个月优惠测试、被动采集与响应活动诊断**
+**G1 ACQ: Ultra 1-month free trial, 2TB 12-month offer test, passive collection and response activity diagnostics**
 
 ```text
 https://cdn.jsdelivr.net/gh/crhywun/g1-acq@v7.6.0/g1-acq-v7.sgmodule
 ```
 
-首次安装时在小火箭模块管理中添加上面的地址并启用；从旧版本升级时，将旧 **G1 ACQ** 替换为此地址一次。模块安装入口与内部响应、报告脚本均固定引用 `@v7.6.0`，无需单独添加脚本；安装或升级后重新连接，再重新进入 Google App 的订阅页。发布新版本需同时更新脚本内容和固定版本 pin；合并 PR 不会让旧固定 CDN 地址自动更新或失效，旧地址仍引用其原版本。升级保留本地历史记录；响应诊断不保证产生新 ID，重复安装也不会促使服务器下发新 SKU。
+For a first install, add the URL above in Shadowrocket's module management and enable it; when upgrading from an old version, replace the old **G1 ACQ** with this URL once. The module installation entry point and its internal response and report scripts all use the fixed `@v7.6.0` reference, so there is no need to add scripts separately; after installing or upgrading, reconnect, then re-enter the subscription page in the Google App. Releasing a new version requires updating both the script content and the fixed version pin; merging a PR does not automatically update or invalidate an old fixed CDN URL, and the old URL still references its original version. Upgrading preserves local history; response diagnostics do not guarantee new IDs will appear, and reinstalling will not prompt the server to issue new SKUs.
 
-只开启这一个 **G1 ACQ** 即可。若手机曾安装独立 **G1 SKU Scan**、**G1 Pro Annual Test** 或其它改写副本，停用这些旧副本，避免重复计数或改写；只装了一个主模块时没有额外关闭步骤。历史 `v7.0.0` / `v7.1.0` / `v7.2.0` / `v7.3.0` / `v7.4.0` / `v7.5.0`、`pro-annual-test-v1` / `pro-annual-test-v2` 标签保持不动。
+Enable only this one **G1 ACQ**. If the phone previously had the standalone **G1 SKU Scan**, **G1 Pro Annual Test**, or other rewrite copies installed, disable those old copies to avoid duplicate counting or rewriting; if only one main module is installed there are no extra steps to disable anything. The historical tags `v7.0.0` / `v7.1.0` / `v7.2.0` / `v7.3.0` / `v7.4.0` / `v7.5.0` and `pro-annual-test-v1` / `pro-annual-test-v2` remain unchanged.
 
-最近 10 次响应诊断由主脚本 `g1-acq-v7.6` 提供；**G1 Pro Annual Test** 兼容入口也使用该脚本，但仍仅匹配 `/ai?`。独立 **G1 SKU Scan** 兼容入口只更新下载 pin，脚本继续保存历史版本 `pro-annual-test-v2`，没有新增活动诊断；新版报告读取它时显示 **旧采集记录**，响应历史为空。
+Diagnostics for the most recent 10 responses are provided by the main script `g1-acq-v7.6`; the **G1 Pro Annual Test** compatibility entry point also uses that script, but still only matches `/ai?`. The standalone **G1 SKU Scan** compatibility entry point only updates the download pin, and its script continues to save the historical version `pro-annual-test-v2` with no new activity diagnostics; when the new report reads it, it shows **old collection records** and an empty response history.
 
-## 三档映射
+## Three-tier mapping
 
-脚本先从 `one.google.com/` 的原始文字响应中采集 SKU，再仅对匹配 `one.google.com/ai?` 的响应按完整源 SKU 执行以下映射：
+The script first collects SKUs from the original text response from `one.google.com/`, then applies the following mapping by full source SKU only to responses matching `one.google.com/ai?`:
 
-| 正文中的完整源 SKU | 默认目标 | 备用目标 |
+| Full source SKU in the body | Default target | Fallback target |
 |---|---|---|
-| `g1.ios.2tb.` 前缀的完整 SKU | `g1.2tb.ai.12months_ip_90p`（用户指定候选） | 无 |
-| `g1.ios.20tb.m.v2` | `g1.20tb.1month_eft.acq`（Ultra 1个月免费试用） | `g1.20tb.3months_ip_90p.acq`（三个月 90p 优惠） |
-| `g1.ios.30tb.ai.pro.m` | `g1.ai.ultra.1month_eft.acq`（Ultra 1个月免费试用） | `g1.ai.ultra.3months_ip_90p.acq`（三个月 90p 优惠） |
+| Full SKU with the `g1.ios.2tb.` prefix | `g1.2tb.ai.12months_ip_90p` (user-specified candidate) | None |
+| `g1.ios.20tb.m.v2` | `g1.20tb.1month_eft.acq` (Ultra 1-month free trial) | `g1.20tb.3months_ip_90p.acq` (three-month 90p offer) |
+| `g1.ios.30tb.ai.pro.m` | `g1.ai.ultra.1month_eft.acq` (Ultra 1-month free trial) | `g1.ai.ultra.3months_ip_90p.acq` (three-month 90p offer) |
 
-2TB 12个月优惠测试的源商品是 **原始 iOS 2TB**，目标固定且没有备用档。20TB / 30TB 各档独立按原始响应正文选择：该档 `1month_eft` 默认目标出现时优先使用默认目标，即使对应 90p 备用也出现；默认目标未出现、对应 90p 备用目标出现时才回退到 90p；两个目标都未出现时仍使用 `1month_eft` 默认目标。75p 不再是本版回退目标；旧版本历史记录中的 `g1.20tb.3months_ip_75p.acq` 与 `g1.ai.ultra.3months_ip_75p.acq` 保留原值。这是正文字符串判断，不是商店商品查询。三档都未命中时原样返回响应。
+The source product for the 2TB 12-month offer test is the **original iOS 2TB**, the target is fixed, and there is no fallback tier. Each of the 20TB / 30TB tiers is chosen independently from the original response body: when that tier's `1month_eft` default target appears, the default target is preferred, even if the corresponding 90p fallback also appears; the 90p fallback is used only when the default target does not appear and the corresponding 90p fallback target does; when neither target appears, the `1month_eft` default target is still used. 75p is no longer a fallback target in this version; `g1.20tb.3months_ip_75p.acq` and `g1.ai.ultra.3months_ip_75p.acq` in historical records from old versions retain their original values. This is a judgement based on strings in the body, not a store product query. When none of the three tiers matches, the response is returned unchanged.
 
-**2TB 候选固定为 `g1.2tb.ai.12months_ip_90p`，没有 `.acq` 后缀。** 用户截图首项提供该候选与价格标签 `$1.99 × 12 months = $23.88/year`，图示表达连续 12 个月的月度优惠；`90p` 表示 **90% off，约一折**，不是实付 90% 的九折。`$23.88/year` 是截图中的 12 个月合计标签，不是一次年付扣款的证据。
+**The 2TB candidate is fixed as `g1.2tb.ai.12months_ip_90p`, with no `.acq` suffix.** The first item in the user's screenshot provides that candidate and the price tag `$1.99 × 12 months = $23.88/year`; the figure expresses a monthly offer over 12 consecutive months; `90p` means **90% off, roughly 10% of the original price**, not 10% off with 90% payable. `$23.88/year` is the 12-month total tag shown in the screenshot, not evidence of a single annual charge.
 
-截图标题为 **Pro 5TB**，本轮源商品仍是 `g1.ios.2tb.` 前缀的原始 iOS 2TB 完整 SKU，没有新增 5TB 源前缀。截图是候选与价格标签的来源，不是已验证的 iOS 商店商品资料，也不证明实际 iOS 价格、扣款周期或 5TB 权益。实际名称、周期、初次与续费金额以 App Store 返回商品核对，权益以 Google One 账户显示为准。离线测试验证字符串匹配与报告行为。
+The screenshot is titled **Pro 5TB**, and the source product in this round remains the full original iOS 2TB SKU with the `g1.ios.2tb.` prefix, with no new 5TB source prefix added. The screenshot is the source of the candidate and price tag, not verified iOS store product information, and it does not prove the actual iOS price, billing period, or 5TB benefits. Check the actual name, period, initial and renewal amounts against the product returned by the App Store, and take benefits as shown in the Google One account. Offline tests verify string matching and report behaviour.
 
-## 安装（Shadowrocket / 小火箭）
+## Installation (Shadowrocket)
 
-进入 **配置页 → 当前使用配置右侧的 (i) 图标 → HTTPS 解密**。
+Go to **Configuration page -> the (i) icon to the right of the currently used configuration -> HTTPS Decryption**.
 
-![配置页入口示意：点击当前使用配置右侧的 (i) 图标进入配置编辑，才能看到 HTTPS 解密](docs-config-entry-example.png)
+![Configuration page entry point: tap the (i) icon to the right of the currently used configuration to enter configuration editing, where you can see HTTPS Decryption](docs-config-entry-example.png)
 
-图中配置名为示例；个人文件列表、修改时间、文件大小和设备状态栏已移除。
+The configuration name in the image is an example; the personal file list, modification times, file sizes, and device status bar have been removed.
 
-1. 在小火箭模块管理中启用上面 `v7.6.0` 地址安装的 **G1 ACQ**；旧版用户按前文升级一次，首页保持 VPN 连接。
-2. 从上述当前配置的 **(i)** 入口进入 **HTTPS 解密**，打开解密开关。已有可用且已受信任的 Shadowrocket 证书时直接沿用；尚未配置证书时，在该页生成并安装证书，再完成下两步。
-3. 首次配置证书时，在 iOS **设置 → 通用 → VPN 与设备管理** 中完成 Shadowrocket 描述文件安装。
-4. 首次配置证书时，在 iOS **设置 → 通用 → 关于本机 → 证书信任设置** 中开启对应 Shadowrocket 根证书的信任。
-5. 在当前配置的 **HTTPS 解密 hostname 列表**中核对 `one.google.com`；模块通过 `%APPEND%` 追加该域名。这里是 HTTPS 解密列表，不是 DNS Hosts。
-6. 安装模块、更改模块开关或解密配置后，重新连接小火箭，再重新进入 Google App 的订阅页面。
+1. In Shadowrocket's module management, enable the **G1 ACQ** installed from the `v7.6.0` URL above; users of old versions upgrade once as described earlier, and keep the VPN connected on the home page.
+2. From the **(i)** entry point of the current configuration above, go to **HTTPS Decryption** and turn on the decryption switch. If you already have a usable and trusted Shadowrocket certificate, keep using it; if no certificate has been configured yet, generate and install a certificate on that page, then complete the next two steps.
+3. When configuring a certificate for the first time, complete installation of the Shadowrocket profile in iOS **Settings -> General -> VPN & Device Management**.
+4. When configuring a certificate for the first time, enable trust for the corresponding Shadowrocket root certificate in iOS **Settings -> General -> About -> Certificate Trust Settings**.
+5. In the **HTTPS decryption hostname list** of the current configuration, check for `one.google.com`; the module appends that domain via `%APPEND%`. This is the HTTPS decryption list, not DNS Hosts.
+6. After installing a module, changing a module switch, or changing decryption settings, reconnect Shadowrocket, then re-enter the subscription page in the Google App.
 
-## 手机端使用流程
+## Usage flow on the phone
 
-1. 保持新版 **G1 ACQ** 开启与小火箭连接；收到匹配响应后，采集和改写会自动依次执行。
-2. 打开 **Google App（彩色 G 图标）→ Google One 管理**，进入 **2TB / Pro** 方案进行12个月优惠测试；核对 Ultra 1个月免费试用映射时，再分别打开实际提供的 **20TB / 30TB** 方案。
-3. 进入订阅流程后，核对 App Store 收银台显示的商品名称、周期、初次与续费金额；在 Safari 地址栏粘贴完整[本地报告地址](https://one.google.com/g1-sku-report)，查看原始候选 SKU 与改写记录，再点操作区的 **导出 JSON** 按钮。
+1. Keep the new **G1 ACQ** enabled and Shadowrocket connected; after a matching response is received, collection and rewriting run automatically in sequence.
+2. Open **Google App (colourful G icon) -> Google One management**, and go to the **2TB / Pro** plan for the 12-month offer test; when checking the Ultra 1-month free trial mapping, also open the actually offered **20TB / 30TB** plans separately.
+3. After entering the subscription flow, check the product name, period, initial and renewal amounts shown at the App Store checkout; paste the full [local report URL](https://one.google.com/g1-sku-report) in the Safari address bar to view the original candidate SKUs and rewrite records, then tap the **Export JSON** button in the actions area.
 
-![Google One Ultra 方案选择面板：旧模块的 20TB 方案入口示例](docs-ultra-plans-example.png)
+![Google One Ultra plan selection panel: example 20TB plan entry point from the old module](docs-ultra-plans-example.png)
 
-截图展示 20TB 入口；2TB 12个月优惠测试应打开 **2TB / Pro** 方案。账号、地区和版本会影响页面展示，以手机实际提供的方案为准。原生 StoreKit 界面自身不属于网页响应改写范围。
+The screenshot shows the 20TB entry point; for the 2TB 12-month offer test you should open the **2TB / Pro** plan. The account, region, and version affect what the page shows; use the plans actually offered on the phone as the basis. The native StoreKit interface itself is outside the scope of web response rewriting.
 
-浏览方案且收到匹配响应时，主模块会先读取原始正文中的 `g1.*` 与 `com.google.one.*`，按 ID 去重累计次数，最多保留 **300 个 ID**，然后才执行符合 `/ai?` 范围的三档改写。重复 ID 只更新次数和时间；到达容量后继续更新已保存 ID，并记录被容量丢弃的新 ID 数。采集保存的是改写前的原始编号，跳过本地报告页；无需另装扫描器。手机保存候选 ID、次数、时间、扫描状态和最多 10 条经过路径脱敏的响应事件，不保存完整响应正文，不查询 App Store，不发网络上报。
+When you browse plans and a matching response is received, the main module first reads `g1.*` and `com.google.one.*` from the original body, accumulates counts deduplicated by ID, retaining at most **300 IDs**, and only then performs the three-tier rewrite that matches the `/ai?` scope. A duplicate ID only updates its count and time; once capacity is reached, already-saved IDs continue to be updated, and the number of new IDs discarded due to capacity is recorded. Collection saves the original IDs from before rewriting and skips the local report page; there is no need to install a separate scanner. The phone stores candidate IDs, counts, times, scan status, and up to 10 path-redacted response events; it does not store the full response body, does not query the App Store, and does not send any network reports.
 
-查找页面未展示的 SKU 时，依次浏览 Google App 实际提供的月付、年付和优惠入口：原始响应中携带的编号即使未显示在界面上，也会被采集。服务器未下发的编号不会进入原始清单；指定候选由模块替换后，在 App Store 原生订阅界面验证。完整 iOS 操作见 [SKU 采集与候选验证](docs/pro-annual-test.md#6-在-ios-小火箭中采集与验证隐藏-sku)。
+When looking for SKUs not shown on the page, browse in turn the monthly, annual, and offer entry points actually offered in the Google App: IDs carried in the original response are collected even if they are not shown in the interface. IDs not issued by the server do not enter the original list; after the module replaces the specified candidate, verify it in the native App Store subscription interface. For full iOS steps, see [Collecting and verifying hidden SKUs on iOS with Shadowrocket](docs/pro-annual-test.md#6-collecting-and-verifying-hidden-skus-on-ios-with-shadowrocket).
 
-## 本地报告与排错
+## Local report and troubleshooting
 
-保持 **G1 ACQ** 开启与小火箭连接，在 Safari 地址栏粘贴完整[本地报告地址](https://one.google.com/g1-sku-report)。页面上方应显示 **本机脚本已接管** 和 **v7.6.0** 标识，操作区有 **导出 JSON** 按钮；也可直接打开[JSON 导出地址](https://one.google.com/g1-sku-report?format=json)。
+Keep **G1 ACQ** enabled and Shadowrocket connected, and paste the full [local report URL](https://one.google.com/g1-sku-report) in the Safari address bar. The top of the page should show the **Handled by local script** and **v7.6.0** badge, and the actions area should have an **Export JSON** button; you can also open the [JSON export URL](https://one.google.com/g1-sku-report?format=json) directly.
 
-地址使用 `one.google.com`，页面由 Shadowrocket 的 `http-request` 脚本在手机本机生成，**不是 Google 提供的报告页面**。拦截范围为 `/g1-sku-report`、末尾带 `/` 的同一路径及其 query；本机接管后直接返回 HTML 或 JSON，不把这次请求交给 Google。
+The address uses `one.google.com`, and the page is generated on the phone by Shadowrocket's `http-request` script; **it is not a report page provided by Google**. The interception scope is `/g1-sku-report`, the same path with a trailing `/`, and their queries; once handled locally, HTML or JSON is returned directly and the request is not passed to Google.
 
-若看到 Google 普通页面、404，或没有上述本机标识与导出按钮，当前展示的就不是这版本机报告。核对新版模块开启、小火箭连接、**当前配置 (i) → HTTPS 解密**、`one.google.com` hostname 与受信任证书，再把完整 URL 粘贴到 Safari 地址栏打开。
+If you see a normal Google page, a 404, or none of the local badge and export button above, what is currently shown is not this version's local report. Check that the new module is enabled, Shadowrocket is connected, **current configuration (i) -> HTTPS Decryption**, the `one.google.com` hostname, and a trusted certificate, then paste the full URL into the Safari address bar and open it.
 
-`reportVersion=v7.6.0` 表示报告脚本版本，**不证明新版采集器已经收到响应**。报告单独展示实际保存的 `scan.version`、最近响应时间与历史；本版主采集器为 `g1-acq-v7.6`。旧脚本记录显示 **旧采集记录；尚未保存本版采集响应记录。** 版本未知或尚无记录时标为 **尚未保存本版采集响应记录**；旧记录未保存 `recentResponses` 时不补造活动历史，也不据此判断手机故障。
+`reportVersion=v7.6.0` indicates the report script version; **it does not prove that the new collector has received a response**. The report separately shows the actually saved `scan.version`, the most recent response time, and history; the main collector in this version is `g1-acq-v7.6`. Records from old scripts show **Old collection records; no response records from the current collector have been saved yet.** When the version is unknown or there are no records yet, it is marked **No response records from the current collector have been saved yet.**; when old records have no saved `recentResponses`, no activity history is fabricated, and this is not used to judge a phone fault.
 
-| 采集字段 | 含义 |
+| Collection field | Meaning |
 |---|---|
-| `scan.scannedResponses` | 累计处理的文字响应数，保持原有计数含义 |
-| `scan.matchedResponses` | 文字响应中至少识别到一个候选 ID 的累计响应数，含重复 ID；保持原有含义 |
-| `scan.nonTextResponses` | 累计非文本响应数，不计入 `scannedResponses` |
-| `scan.recentResponses` | 最多 10 条响应事件；JSON 数组按接收顺序旧 → 新保存，HTML 表格按新 → 旧展示；每条含 `{at, path, bodyType, status, candidateCount, addedCount, omittedCount}` |
+| `scan.scannedResponses` | Cumulative number of text responses processed, retaining its original counting meaning |
+| `scan.matchedResponses` | Cumulative number of text responses in which at least one candidate ID was identified, including duplicate IDs; retaining its original meaning |
+| `scan.nonTextResponses` | Cumulative number of non-text responses, not counted in `scannedResponses` |
+| `scan.recentResponses` | Up to 10 response events; the JSON array is saved in arrival order old -> new, and the HTML table is shown new -> old; each entry contains `{at, path, bodyType, status, candidateCount, addedCount, omittedCount}` |
 
-单次事件中，`candidateCount` 是该响应内去重后的候选数，`addedCount` 是本次新加入并实际保留的 ID 数，`omittedCount` 是本次因容量丢弃的不同 ID 数。状态包括 `new-skus`（新增）、`known-skus`（重复）、`no-skus`（无 ID）、`limit-reached`（无新增保留且有容量丢弃）、`non-text`（非文本）。`addedCount>0` 时优先标为 `new-skus`，即使同时 `omittedCount>0`；只有 `addedCount=0` 且 `omittedCount>0` 时才标为 `limit-reached`。路径只保留 `/`、`/ai`、`/plans`、`/_/…/data/batchexecute` 或 `[其他 one.google.com 路径]`，不保存 query、完整 URL、正文、请求头或响应头。
+In a single event, `candidateCount` is the number of deduplicated candidates in that response, `addedCount` is the number of IDs newly added and actually retained this time, and `omittedCount` is the number of distinct IDs discarded this time due to capacity. Statuses include `new-skus` (new), `known-skus` (duplicate), `no-skus` (no IDs), `limit-reached` (no new IDs retained and capacity discards present), and `non-text` (non-text). When `addedCount>0`, `new-skus` takes precedence, even if `omittedCount>0` at the same time; `limit-reached` is used only when `addedCount=0` and `omittedCount>0`. The path retains only `/`, `/ai`, `/plans`, `/_/…/data/batchexecute`, or `[Other one.google.com path]`, and does not store the query, full URL, body, request headers, or response headers.
 
-顶层 `configuredTarget=g1.2tb.ai.12months_ip_90p` 表示当前配置；`test.version`、`test.target` 则来自最近一次保存的执行记录，升级后仍会保留旧版本与实际保存的旧目标，直到产生新记录。当前响应脚本为 `g1-acq-v7.6`，新候选记录的 `test.targetOrigin=user-specified`。旧 v7.5 记录的 2TB 目标同样是 `g1.2tb.ai.12months_ip_90p`、来源为 `user-specified`，但 `test.version` 仍是 `g1-acq-v7.5`；相同目标不代表旧记录已升级。旧 v7.3 / v7.4 记录保留 `g1.2tb.ai.annual_ip_90p.acq` 与 `user-specified`；旧 v7.2 记录保留 `g1.2tb.ai.annual.3months_ip_90p.acq` 与 `pattern-derived`；旧 v1 / v7.1 普通年付记录保留 `g1.2tb.ai.annual` 与 `legacy`；无记录时来源为空。升级不会把历史 ID 或目标来源重标为当前候选。`test.target` 仅表示该次执行配置的 2TB 目标；20TB / 30TB 的实际目标看各行 `to`。
+The top-level `configuredTarget=g1.2tb.ai.12months_ip_90p` indicates the current configuration; `test.version` and `test.target`, by contrast, come from the most recently saved execution record, and after an upgrade they still retain the old version and the actually saved old target until a new record is produced. The current response script is `g1-acq-v7.6`, and new candidate records have `test.targetOrigin=user-specified`. The 2TB target of old v7.5 records is also `g1.2tb.ai.12months_ip_90p` with origin `user-specified`, but their `test.version` remains `g1-acq-v7.5`; the same target does not mean an old record has been upgraded. Old v7.3 / v7.4 records retain `g1.2tb.ai.annual_ip_90p.acq` and `user-specified`; old v7.2 records retain `g1.2tb.ai.annual.3months_ip_90p.acq` and `pattern-derived`; old v1 / v7.1 regular annual records retain `g1.2tb.ai.annual` and `legacy`; when there is no record the origin is empty. An upgrade does not re-label historical IDs or target origins as the current candidate. `test.target` only indicates the 2TB target configured for that execution; for the actual 20TB / 30TB targets, see the `to` field on each row.
 
-`test.hitCount` 是三档总改写数；`test.annualHitCount` 沿用兼容字段名，仅统计 2TB / Pro 优惠改写，日志 `annualHits` 含义相同，报告显示“其中 2TB”。字段名与计数不证明年付扣款。`test.matchedFrom` 每行含 `{id, to, count, fallback}`：`to` 是该源本次实际目标，`fallback=true` 表示使用了该次执行对应版本的备用目标。本版 20TB / 30TB 的备用目标分别是 `g1.20tb.3months_ip_90p.acq` / `g1.ai.ultra.3months_ip_90p.acq`；旧版本历史记录仍可保留 75p 备用目标。HTML 结合 `fallback` 与实际 `to` 显示 90p 备用、历史 75p 备用或“否”；已标为备用但目标信息不足时只显示“是”，旧行原值继续保留。`fallback=false` 时也应结合 `test.version` 与 `to` 核对默认目标。
+`test.hitCount` is the total number of rewrites across the three tiers; `test.annualHitCount` retains its compatibility field name and only counts 2TB / Pro offer rewrites, the log field `annualHits` has the same meaning, and the report displays it as "of which 2TB". The field name and count do not prove an annual charge. Each row of `test.matchedFrom` contains `{id, to, count, fallback}`: `to` is the actual target for that source in that run, and `fallback=true` means the fallback target of the version used for that execution was used. In this version, the 20TB / 30TB fallback targets are `g1.20tb.3months_ip_90p.acq` / `g1.ai.ultra.3months_ip_90p.acq` respectively; historical records from old versions may still retain 75p fallback targets. The HTML combines `fallback` with the actual `to` to show the 90p fallback, the historical 75p fallback, or "No"; when a row is marked as fallback but target information is insufficient, it shows only "Yes", and old rows retain their original values. When `fallback=false`, you should also check the default target against `test.version` and `to`.
 
-`status=no-match` 仅表示三档都没命中，此时保留响应原样；若 2TB 没命中但 20TB / 30TB 命中，状态仍为 `rewritten`，须看 `annualHitCount` 判断 2TB 优惠改写。报告保留最近一次执行记录，按时间核对；根据采集结果确认完整源 ID，不推测新的 iOS SKU。报告兼容旧 v1 的仅 2TB 记录：旧行缺少 `to` 时补为原普通年付目标 `g1.2tb.ai.annual`，缺少的 `annualHitCount` 从旧行次数计算。旧 v1 / v7.1 执行记录继续显示 `g1.2tb.ai.annual`；旧 v7.2 记录继续显示实际保存的 `g1.2tb.ai.annual.3months_ip_90p.acq`；旧 v7.3 / v7.4 记录继续显示 `g1.2tb.ai.annual_ip_90p.acq`；旧 v7.5 记录继续显示 `g1.2tb.ai.12months_ip_90p` 和旧版本 `g1-acq-v7.5`。这些旧记录的实际目标、来源与版本均保留。
+`status=no-match` only means none of the three tiers matched, and the response is preserved unchanged in that case; if 2TB does not match but 20TB / 30TB do, the status is still `rewritten`, and you must look at `annualHitCount` to judge the 2TB offer rewrite. The report retains the most recent execution record; check it by time, confirm the full source IDs from the collection results, and do not speculate about new iOS SKUs. The report is compatible with old v1 records that only have 2TB: when an old row lacks `to`, it is filled in as the original regular annual target `g1.2tb.ai.annual`, and a missing `annualHitCount` is calculated from the counts of the old rows. Old v1 / v7.1 execution records continue to show `g1.2tb.ai.annual`; old v7.2 records continue to show the actually saved `g1.2tb.ai.annual.3months_ip_90p.acq`; old v7.3 / v7.4 records continue to show `g1.2tb.ai.annual_ip_90p.acq`; old v7.5 records continue to show `g1.2tb.ai.12months_ip_90p` and the old version `g1-acq-v7.5`. The actual targets, origins, and versions of these old records are all retained.
 
-当前脚本日志前缀为 `[g1-acq]`，按以下字段核对执行结果：
+The current script log prefix is `[g1-acq]`; check execution results by the following fields:
 
-| 输出标记 | 含义 |
+| Output marker | Meaning |
 |---|---|
-| `g1-acq-v7.6 status=<状态> addedCount=N candidates=N omittedCount=N occurrences=N saved=yes/no` | 采集状态、本次新保留数、单响应去重候选数、容量丢弃数、字符串出现总次数与存储结果；`saved=yes` 才表示本次记录已写入 |
-| `saved=no` / `SKU collection unavailable` | 本次记录写入未成功，或采集流程未完成；报告仍能显示旧计数与旧时间，须核对这类日志 |
-| `g1-acq-v7.6 hits=N annualHits=N` | 当前脚本版本、三档总改写数与其中 2TB / Pro 优惠改写数（兼容日志名，不证明年付扣款） |
-| `源 SKU → 实际目标 xN` | 逐行记录完整源 ID、本次实际目标与该源改写次数 |
-| `fallback=实际完整目标编号` | 该行 20TB / 30TB 使用备用档；本版输出 `fallback=g1.20tb.3months_ip_90p.acq` 或 `fallback=g1.ai.ultra.3months_ip_90p.acq`，与该行实际 `to` 一致；旧版本日志中的 `fallback=75p` 仅为历史格式 |
+| `g1-acq-v7.6 status=<status> addedCount=N candidates=N omittedCount=N occurrences=N saved=yes/no` | Collection status, number newly retained this time, deduplicated candidates in a single response, capacity discards, total string occurrences, and storage result; only `saved=yes` means this record was written |
+| `saved=no` / `SKU collection unavailable` | This record write did not succeed, or the collection flow did not complete; the report can still show old counts and old times, so check for these logs |
+| `g1-acq-v7.6 hits=N annualHits=N` | Current script version, total rewrites across the three tiers, and the number of 2TB / Pro offer rewrites among them (compatibility log name; does not prove an annual charge) |
+| `Source SKU -> Actual target xN` | Records, row by row, the full source ID, the actual target this time, and the rewrite count for that source |
+| `fallback=<actual full target ID>` | That row of 20TB / 30TB used the fallback tier; this version outputs `fallback=g1.20tb.3months_ip_90p.acq` or `fallback=g1.ai.ultra.3months_ip_90p.acq`, matching the actual `to` on that row; `fallback=75p` in old-version logs is only a historical format |
 
-清单仍是旧 SKU 时，按下面顺序比较一次实际活动：
+When the list still shows old SKUs, compare against a single actual activity in the order below:
 
-1. 在报告记录 `reportVersion`、实际 `scan.version`、三个响应计数与最新事件时间，保留当前清单。
-2. 从 Google App 重新进入实际提供的 2TB / Pro 方案，再浏览其它实际方案页，等待加载完成。
-3. 返回 Safari 刷新报告。文字计数增长且最新事件为 `known-skus`，说明收到的是已保存 ID，次数会增加而清单不增加；`no-skus` 表示该响应未携带可识别 ID。若只增加 `nonTextResponses`，查看 `non-text` 事件。
-4. 三个计数与最新事件时间均未变化，只能确认这轮未保存新的采集记录；存储写入失败也会保留旧计数。先查看脚本日志是否出现 `saved=no` 或 `SKU collection unavailable`，再逐项核对页面缓存、`one.google.com/` 匹配范围、VPN 连接、模块开关、当前配置的 HTTPS 解密、证书信任与 hostname。报告版本升级本身不代表采集脚本已执行。
+1. In the report, note `reportVersion`, the actual `scan.version`, the three response counts, and the latest event time, and preserve the current list.
+2. From the Google App, re-enter the actually offered 2TB / Pro plan, then browse the other actually offered plan pages and wait for loading to complete.
+3. Return to Safari and refresh the report. If the text counts have grown and the latest event is `known-skus`, it means already-saved IDs were received; counts increase but the list does not. `no-skus` means that response carried no identifiable ID. If only `nonTextResponses` increases, view the `non-text` events.
+4. If none of the three counts or the latest event time changed, you can only confirm that no new collection record was saved in this round; a failed storage write also preserves the old counts. First check whether the script logs show `saved=no` or `SKU collection unavailable`, then check item by item the page cache, the `one.google.com/` matching scope, the VPN connection, the module switch, the current configuration's HTTPS decryption, certificate trust, and hostname. A report version upgrade alone does not mean the collection script has run.
 
-这组诊断不保证新 SKU 出现；重装模块或反复清空记录不会使服务器返回新编号。`?clear=1` 保持手动两键清理，仅在确实要重置历史时使用。完整字段、采集与实机记录模板见 [Pro 12个月优惠测试与 SKU 扫描](docs/pro-annual-test.md)。
+These diagnostics do not guarantee that new SKUs will appear; reinstalling the module or repeatedly clearing records will not make the server return new IDs. `?clear=1` remains a manual two-key clear, to be used only when you really want to reset history. For full fields, collection, and an on-device record template, see [Pro 12-month offer test and SKU scanning](docs/pro-annual-test.md).
 
-## 工作范围与本地存储
+## Scope of work and local storage
 
-| 工具 | 脚本匹配范围 | 行为 |
+| Tool | Script matching scope | Behaviour |
 |---|---|---|
-| G1 ACQ 被动采集 | `^https://one\.google\.com/` 的响应，跳过本地报告页 | 从原始文字正文采集候选 ID；非文本单独计数；保存最近 10 次响应诊断 |
-| G1 ACQ 三档改写 | `^https://one\.google\.com/ai\?` 的响应 | 采集后执行完整 SKU 改写、独立回退并保存最近执行记录 |
-| 本地结果页 | `/g1-sku-report`、末尾带 `/` 的同一路径及其 query | 本机显示采集结果、最近改写记录或导出 JSON |
+| G1 ACQ passive collection | Responses from `^https://one\.google\.com/`, skipping the local report page | Collects candidate IDs from the original text body; counts non-text separately; saves diagnostics for the most recent 10 responses |
+| G1 ACQ three-tier rewrite | Responses from `^https://one\.google\.com/ai\?` | After collection, performs the full SKU rewrite with independent fallback and saves the most recent execution record |
+| Local result page | `/g1-sku-report`, the same path with a trailing `/`, and their queries | Displays collection results and the most recent rewrite record locally, or exports JSON |
 
-- **脚本处理范围**：G1 ACQ 被动读取匹配页面的响应体，先保存候选 ID、次数、时间、扫描状态与最多 10 条脱敏响应事件，再检查改写范围；不读取请求头或请求体，不保存完整响应正文。响应事件只保存时间、固定类别路径、正文类型、诊断状态与计数，不保存 query 或完整 URL。改写只修改商品 ID，不改价格字段，页面文字价格不替代 App Store 收银台金额。
-- **实际外发行为**：当前脚本没有网络上报调用；G1 ACQ 写脚本日志，采集、改写和报告共用手机本地 `$persistentStore`。Shadowrocket 脚本宿主提供网络与存储 API，当前代码未调用网络上报不等于宿主缺少外发能力。模块与脚本下载仍使用 GitHub / jsDelivr 地址。
-- **MITM 范围**：模块只追加 `one.google.com`，其全站流量进入解密范围；页面改写受脚本路径限制。证书在设备生成、安装与信任，HTTPS 解密设置属于当前配置。
-- **系统权限**：脚本没有申请定位、相册、通知的调用；使用过程包含小火箭 VPN 连接和 iOS 描述文件、根证书信任配置。
-- **全局规则影响**：模块的 `[Rule]` 拦截全局 UDP 443，促使支持回退的 QUIC 请求改走 TCP，也会影响其它 App 的 HTTP/3 使用、速度或连通性。
-- **版本与存储**：本次模块安装入口与全部内部脚本统一固定引用 `@v7.6.0`；历史版本与 v1 / v2 标签保留且不移动。本地键仍为 `g1.sku.scan.v1`、`g1.pro.annual.test.v1`，`schemaVersion` 保持 `1`；采集、响应事件与执行记录时间使用 UTC；结果页的 `?clear=1` 只清除这两个键。
+- **Script processing scope**: G1 ACQ passively reads the response bodies of matching pages, first saving candidate IDs, counts, times, scan status, and up to 10 redacted response events, then checks the rewrite scope; it does not read request headers or request bodies, and does not save the full response body. Response events store only the time, fixed category path, body type, diagnostic status, and counts, and do not store the query or full URL. Rewriting only changes product IDs and does not change price fields; prices shown as page text are no substitute for amounts at the App Store checkout.
+- **Actual outbound behaviour**: the current scripts have no network reporting calls; G1 ACQ writes script logs, and collection, rewriting, and the report share the phone's local `$persistentStore`. The Shadowrocket script host provides network and storage APIs; the fact that the current code does not call network reporting does not mean the host lacks outbound capability. Module and script downloads still use GitHub / jsDelivr URLs.
+- **MITM scope**: the module only appends `one.google.com`, bringing that site's traffic into the decryption scope; page rewriting is limited by the script paths. Certificates are generated, installed, and trusted on the device, and HTTPS decryption settings belong to the current configuration.
+- **System permissions**: the scripts make no calls requesting location, photo library, or notification permissions; usage involves the Shadowrocket VPN connection and iOS profile and root certificate trust configuration.
+- **Global rule impact**: the module's `[Rule]` blocks global UDP 443, prompting QUIC requests that support fallback to use TCP instead; this also affects HTTP/3 use, speed, or connectivity in other apps.
+- **Version and storage**: the module installation entry point in this release and all internal scripts uniformly use the fixed `@v7.6.0` reference; historical versions and the v1 / v2 tags are retained and not moved. The local keys remain `g1.sku.scan.v1` and `g1.pro.annual.test.v1`, `schemaVersion` remains `1`; collection, response event, and execution record times use UTC; the result page's `?clear=1` clears only these two keys.
 
-## 文件
+## Files
 
-| 文件 | 用途 |
+| File | Purpose |
 |---|---|
-| [g1-acq-v7.sgmodule](g1-acq-v7.sgmodule) | 唯一主模块：被动采集、三档改写与响应活动诊断 |
-| [g1-acq.js](g1-acq.js) | `g1-acq-v7.6` 响应脚本，先采集原始 SKU 与活动诊断，再改写并保存记录 |
-| [g1-pro-annual-test.sgmodule](g1-pro-annual-test.sgmodule) | 旧版兼容文件，保留 `/ai?` 匹配范围，主流程无需安装或启用 |
-| [g1-sku-scan.sgmodule](g1-sku-scan.sgmodule) | 旧版独立扫描兼容文件，主流程无需安装或启用 |
-| [g1-sku-scan.js](g1-sku-scan.js) | 历史独立扫描脚本，保留候选 ID 去重、计数与时间记录；未增加响应活动诊断 |
-| [g1-sku-report.js](g1-sku-report.js) | 本机 HTML 报告、实际采集版本与响应历史、导出 JSON 和手动两键清理 |
-| [docs/pro-annual-test.md](docs/pro-annual-test.md) | 单模块使用、被动采集诊断、12个月优惠实机核对与报告字段 |
+| [g1-acq-v7.sgmodule](g1-acq-v7.sgmodule) | The sole main module: passive collection, three-tier rewriting, and response activity diagnostics |
+| [g1-acq.js](g1-acq.js) | The `g1-acq-v7.6` response script; first collects original SKUs and activity diagnostics, then rewrites and saves records |
+| [g1-pro-annual-test.sgmodule](g1-pro-annual-test.sgmodule) | Legacy compatibility file, retaining the `/ai?` matching scope; no need to install or enable it in the main flow |
+| [g1-sku-scan.sgmodule](g1-sku-scan.sgmodule) | Legacy standalone scanning compatibility file; no need to install or enable it in the main flow |
+| [g1-sku-scan.js](g1-sku-scan.js) | Historical standalone scanning script, retaining candidate ID deduplication, counting, and time records; no response activity diagnostics added |
+| [g1-sku-report.js](g1-sku-report.js) | Local HTML report, actual collection version and response history, JSON export, and manual two-key clear |
+| [docs/pro-annual-test.md](docs/pro-annual-test.md) | Single-module use, passive collection diagnostics, 12-month offer on-device checks, and report fields |
 
-## 离线验证
+## Offline verification
 
-使用 Node.js 18 或更新版本，在仓库根目录执行：
+Using Node.js 18 or newer, run in the repository root:
 
 ```sh
 node --test tests/sku-tools.test.cjs
 ```
 
-离线检查以主脚本 [g1-acq.js](g1-acq.js) 为核心，覆盖三档完整编号匹配、2TB 固定 12个月优惠候选、20TB / 30TB 的 `1month_eft` 默认优先和 90p 独立回退的 16 种组合、默认与备用均缺失时仍使用 `1month_eft`、75p 不参与本版回退、只有 20TB / 30TB 的页面、URL 范围、三档零命中、总改写数与 2TB 改写数、按实际 `to` 显示 90p 备用和历史 75p 备用、当前配置与最近执行目标区分、旧 v1 / v7.1 / v7.2 / v7.3 / v7.4 / v7.5 报告兼容、存储异常、采集去重与上限、本地报告、导出字段和模块脚本版本。以实际执行输出核对结果；测试中的源编号是合成样本，不构成商店上架或实机购买证据。
+The offline checks centre on the main script [g1-acq.js](g1-acq.js) and cover full ID matching for the three tiers, the fixed 2TB 12-month offer candidate, all 16 combinations of the `1month_eft` default preference and 90p independent fallback for 20TB / 30TB, still using `1month_eft` when both the default and fallback are absent, 75p not participating in this version's fallback, pages with only 20TB / 30TB, URL scope, zero matches across the three tiers, total rewrites versus 2TB rewrites, showing the 90p fallback and historical 75p fallback by actual `to`, distinguishing the current configuration from the most recent execution target, compatibility with old v1 / v7.1 / v7.2 / v7.3 / v7.4 / v7.5 reports, storage exceptions, collection deduplication and limits, the local report, export fields, and module script versions. Check the results against the actual execution output; the source IDs in the tests are synthetic samples and do not constitute evidence of store listing or on-device purchase.
 
-## 贡献致谢
+## Acknowledgements
 
-感谢 [@cehomecambodia-lang](https://github.com/cehomecambodia-lang) 通过 [PR #3](https://github.com/crhywun/g1-acq/pull/3) 提供 20TB / 30TB Ultra 1个月免费试用 SKU 映射和三个月 90p 备用方案。
+Thanks to [@cehomecambodia-lang](https://github.com/cehomecambodia-lang) for providing, via [PR #3](https://github.com/crhywun/g1-acq/pull/3), the 20TB / 30TB Ultra 1-month free trial SKU mappings and the three-month 90p fallback scheme.
