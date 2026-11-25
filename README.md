@@ -17,10 +17,10 @@ This version integrates [GitHub PR #3](https://github.com/crhywun/g1-acq/pull/3)
 **G1 ACQ: Ultra 1-month free trial, 2TB 12-month offer test, passive collection and response activity diagnostics**
 
 ```text
-https://cdn.jsdelivr.net/gh/crhywun/g1-acq@v7.6.0/g1-acq-v7.sgmodule
+https://cdn.jsdelivr.net/gh/Zpankz/gacc@v7.6.0-en.1/g1-acq-v7.sgmodule
 ```
 
-For a first install, add the URL above in Shadowrocket's module management and enable it; when upgrading from an old version, replace the old **G1 ACQ** with this URL once. The module installation entry point and its internal response and report scripts all use the fixed `@v7.6.0` reference, so there is no need to add scripts separately; after installing or upgrading, reconnect, then re-enter the subscription page in the Google App. Releasing a new version requires updating both the script content and the fixed version pin; merging a PR does not automatically update or invalidate an old fixed CDN URL, and the old URL still references its original version. Upgrading preserves local history; response diagnostics do not guarantee new IDs will appear, and reinstalling will not prompt the server to issue new SKUs.
+For a first install, add the URL above in Shadowrocket's module management and enable it; when upgrading from an old version, replace the old **G1 ACQ** with this URL once. The module installation entry point and its internal response and report scripts all use the fixed `@v7.6.0-en.1` reference, so there is no need to add scripts separately; after installing or upgrading, reconnect, then re-enter the subscription page in the Google App. Releasing a new version requires updating both the script content and the fixed version pin; merging a PR does not automatically update or invalidate an old fixed CDN URL, and the old URL still references its original version. Upgrading preserves local history; response diagnostics do not guarantee new IDs will appear, and reinstalling will not prompt the server to issue new SKUs.
 
 Enable only this one **G1 ACQ**. If the phone previously had the standalone **G1 SKU Scan**, **G1 Pro Annual Test**, or other rewrite copies installed, disable those old copies to avoid duplicate counting or rewriting; if only one main module is installed there are no extra steps to disable anything. The historical tags `v7.0.0` / `v7.1.0` / `v7.2.0` / `v7.3.0` / `v7.4.0` / `v7.5.0` and `pro-annual-test-v1` / `pro-annual-test-v2` remain unchanged.
 
@@ -128,7 +128,7 @@ These diagnostics do not guarantee that new SKUs will appear; reinstalling the m
 - **MITM scope**: the module only appends `one.google.com`, bringing that site's traffic into the decryption scope; page rewriting is limited by the script paths. Certificates are generated, installed, and trusted on the device, and HTTPS decryption settings belong to the current configuration.
 - **System permissions**: the scripts make no calls requesting location, photo library, or notification permissions; usage involves the Shadowrocket VPN connection and iOS profile and root certificate trust configuration.
 - **Global rule impact**: the module's `[Rule]` blocks global UDP 443, prompting QUIC requests that support fallback to use TCP instead; this also affects HTTP/3 use, speed, or connectivity in other apps.
-- **Version and storage**: the module installation entry point in this release and all internal scripts uniformly use the fixed `@v7.6.0` reference; historical versions and the v1 / v2 tags are retained and not moved. The local keys remain `g1.sku.scan.v1` and `g1.pro.annual.test.v1`, `schemaVersion` remains `1`; collection, response event, and execution record times use UTC; the result page's `?clear=1` clears only these two keys.
+- **Version and storage**: the module installation entry point in this release and all internal scripts uniformly use the fixed `@v7.6.0-en.1` reference; historical versions and the v1 / v2 tags are retained and not moved. The local keys remain `g1.sku.scan.v1` and `g1.pro.annual.test.v1`, `schemaVersion` remains `1`; collection, response event, and execution record times use UTC; the result page's `?clear=1` clears only these two keys.
 
 ## Files
 

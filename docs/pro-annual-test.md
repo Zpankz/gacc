@@ -15,7 +15,7 @@ The screenshot is titled **Pro 5TB**, and the source product in this round remai
 **G1 ACQ — Ultra 1-month free trial, 2TB 12-month offer test, passive collection, most recent 10 responses diagnostics, and JSON export**
 
 ```text
-https://cdn.jsdelivr.net/gh/crhywun/g1-acq@v7.6.0/g1-acq-v7.sgmodule
+https://cdn.jsdelivr.net/gh/Zpankz/gacc@v7.6.0-en.1/g1-acq-v7.sgmodule
 ```
 
 For a first install, add the URL above in Shadowrocket's module management and enable it; when upgrading from an old version, replace the old **G1 ACQ** with this URL once. The module name remains **G1 ACQ**, and the installation entry point and all internal scripts use the fixed `@v7.6.0` reference, so there is no need to add scripts separately. After installing or upgrading, reconnect, then reopen the plan page in the Google App. Releasing a new version requires updating both the script content and the fixed version pin; merging a PR does not automatically update or invalidate an old fixed CDN URL, and the old URL still references its original version. Upgrading preserves history; reinstalling repeatedly will not prompt the server to issue new SKUs, so when diagnosing, first compare version, counts, and response times.
@@ -212,7 +212,7 @@ Performing the single diagnostic in Section 3 — "note first -> reopen the actu
 Collection / test time (with time zone): [fill in]
 iOS / Google App / Shadowrocket versions: [fill in]
 Main module name: G1 ACQ
-Main module URL: https://cdn.jsdelivr.net/gh/crhywun/g1-acq@v7.6.0/g1-acq-v7.sgmodule
+Main module URL: https://cdn.jsdelivr.net/gh/Zpankz/gacc@v7.6.0-en.1/g1-acq-v7.sgmodule
 Main module release version: v7.6.0
 Main module script version: g1-acq-v7.6
 Run method: single-module passive collection of original SKUs and the most recent 10 responses, then three-tier rewriting (Ultra 1-month free trial / three-month 90p fallback, 2TB 12-month offer candidate)
